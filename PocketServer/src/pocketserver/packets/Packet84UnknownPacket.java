@@ -5,21 +5,36 @@ import java.nio.ByteBuffer;
 
 class Packet84UnknownPacket {
     
-    private long unknown;
+    private long unknown1;
+    private long unknown2;
+    private int i;
 
     Packet84UnknownPacket(byte[] data) {
 	ByteBuffer bb = ByteBuffer.wrap(data);
-	unknown = bb.getLong();
+	i = (bb.get() & 0xFF);
+	unknown1 = bb.getLong();
+	if (i != 0x00) {
+	    unknown2 = bb.getLong();
+	}
     }
 
     public DatagramPacket getPacket() {
-	ByteBuffer b = ByteBuffer.allocate(12);
+	int size = 12;
+	if (i == 0x03) { size += 8; }
+	ByteBuffer b = ByteBuffer.allocate(size);
         b.put((byte)0x00);
 	b.put((byte)0x00);
-	b.put((byte)0x48);
-	b.put((byte)0x00);
-	b.putLong(unknown);
-        return new DatagramPacket(b.array(),12);
+	if (i == 0x00) {
+	    b.put((byte)0x48);
+	    b.put((byte)0x00);
+	    b.putLong(unknown1);  
+	} else {
+	    b.put((byte)0x88);
+	    b.put((byte)0x00);
+	    b.putLong(unknown1);
+	    b.putLong(unknown2);
+	}
+        return new DatagramPacket(b.array(),size);
     }
     
     byte[] response() {

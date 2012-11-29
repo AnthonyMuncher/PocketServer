@@ -1,9 +1,9 @@
 package pocketserver.packets;
 
-import pocketserver.PacketHandler;
 import java.net.DatagramPacket;
 import java.nio.ByteBuffer;
 import pocketserver.Hex;
+import pocketserver.PacketHandler;
 
 public class Packet08ConnectionReply2 extends Packet {
     private byte packetType;
@@ -23,6 +23,7 @@ public class Packet08ConnectionReply2 extends Packet {
         clientPort = (short)packet.getPort();
     }
 
+    @Override
     public DatagramPacket getPacket() {
         ByteBuffer b = ByteBuffer.allocate(35);
         b.put((byte)0x08);
@@ -36,6 +37,7 @@ public class Packet08ConnectionReply2 extends Packet {
         return new DatagramPacket(b.array(),35);
     }
     
+    @Override
     public void process(PacketHandler handler) {
         handler.write(getPacket());
     }

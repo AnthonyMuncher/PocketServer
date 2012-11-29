@@ -1,6 +1,5 @@
 package pocketserver.packets;
 
-import pocketserver.PacketHandler;
 import java.net.DatagramPacket;
 import java.nio.ByteBuffer;
 import pocketserver.*;
@@ -19,6 +18,7 @@ public class Packet02PingListeners extends Packet{
         magic = Hex.getMagicFromBuffer(bb);
     }
 
+    @Override
     public DatagramPacket getPacket() {
         ByteBuffer rData = ByteBuffer.allocate(25);
         rData.put((byte)0x1c);
@@ -27,6 +27,7 @@ public class Packet02PingListeners extends Packet{
         return new DatagramPacket(rData.array(),25);
     }
 
+    @Override
     public void process(PacketHandler handler) {
         handler.process(getPacket());
     }

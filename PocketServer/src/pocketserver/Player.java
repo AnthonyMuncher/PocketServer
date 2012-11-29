@@ -10,10 +10,12 @@ public class Player {
     private String username;
     private int clientCount;
     private int serverCount;
+    private long clientID;
 
     public Player(InetAddress address, int port) {
         this.address = address;
         this.port = port;
+	this.serverCount = 0;
     }
 
     public long getLastRead() {
@@ -61,8 +63,14 @@ public class Player {
     }
     
     public int getServerCount() {
-	this.serverCount++;
 	return this.serverCount;
     }
     
+    public void upServerCount() {
+	this.serverCount++;
+    }
+
+    public void setClientID(long unknown1) {
+	this.clientID = unknown1;
+    }
 }

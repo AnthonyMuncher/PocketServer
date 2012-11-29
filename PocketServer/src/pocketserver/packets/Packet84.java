@@ -39,10 +39,9 @@ public class Packet84 extends Packet {
     @Override
     public void process(PacketHandler handler) {
 	
-	handler.process(getACK());
+	handler.write(getACK());
 	
 	splitPacket();
-	System.out.println("Packets todo: " + customPackets.size());
 	
 	Iterator it = customPackets.iterator();
 	
@@ -63,18 +62,24 @@ public class Packet84 extends Packet {
 	
 	if (f.size() > 4) {
 	    System.out.println("Response: " + Hex.getHexString(f.toByteArray(), true));
-	    System.out.println("Write!");
 	    DatagramPacket p = new DatagramPacket(f.toByteArray(),f.size());
 	    handler.write(p);
+	    handler.player.upServerCount();
+	} else {
+	    System.out.println("NO Response :(");
 	}
     }
 
     public DatagramPacket getACK() {
-	ByteBuffer rData = ByteBuffer.allocate(5);
-	rData.put((byte) 0xc0);
-	rData.put((byte) 0x01);
+	ByteBuffer rData = ByteBuffer.allocate(7);
+	rData.put((byte)0xc0);
+	rData.putShort((short)1);
+	rData.put((byte)0x01);
 	rData.put(Hex.intToBytes(count, 3));
-	return new DatagramPacket(rData.array(), 5);
+//	rData.put((byte) 0xc0);
+//	rData.put((byte) 0x01);
+//	rData.put(Hex.intToBytes(count, 3));
+	return new DatagramPacket(rData.array(), 7);
     }
 
     public void splitPacket() {

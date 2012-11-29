@@ -11,11 +11,13 @@ public class Packetc0 extends Packet {
     private byte[] count1 = new byte[3];
     private byte[] count2 = new byte[3];
     private byte multi;
+    private short unknown;
 
     public Packetc0(DatagramPacket packet) {
         ByteBuffer bb = ByteBuffer.wrap(packet.getData());
         packetType = Hex.byteToInt((int)bb.get());
         if (packetType != 0xc0) { return; }
+	unknown = bb.getShort();
 	multi = bb.get();
         bb.get(count1);
 	if (multi == 0x00) {

@@ -39,29 +39,29 @@ class DataPacket {
     byte[] getResponse(PacketHandler handler) {
 	byte[] b = null;
 	if (encapsulationID == 0x00) {
-	    System.out.println("Unknownpacket");
-	    Packet84UnknownPacket up = new Packet84UnknownPacket(data);
+	    Packet84UnknownPacket up = new Packet84UnknownPacket(data);	// Something is wrong!
 	    b = up.response();
 	} else if (encapsulationID == 0x40) {
 	    if (mcpeID == 0x09) {
-		System.out.println("FirstDataPacket");
 		Packet84FirstDataPacket fdp = new Packet84FirstDataPacket(data);
 		b = fdp.response(handler);
 	    } else if (mcpeID == 0x82) {
 		System.out.println("LoginPacket");
 		Packet84LoginPacket lp = new Packet84LoginPacket(data);
 		b = lp.response(handler);
+	    } else {
+		System.out.println("Packet missing in DataPacket.java! " + Integer.toHexString(mcpeID));
 	    }
 	} else if (encapsulationID == 0x60) {
 	    if (mcpeID == 0x00) {
-		System.out.println("FirstDataPacketResponse");
 		Packet84FirstDataPacketResponse fdpr = new Packet84FirstDataPacketResponse(data);
-		b = fdpr.response();
+		b = fdpr.response(handler);
+	    } else {
+		System.out.println("Packet missing in DataPacket.java! " + Integer.toHexString(mcpeID));
 	    }
 	} else {
 	    System.out.println("Packet missing in DataPacket.java! " + Integer.toHexString(encapsulationID));
 	}
-	
 	return b;
     }
     

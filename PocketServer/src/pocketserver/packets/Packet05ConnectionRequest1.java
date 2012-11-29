@@ -1,6 +1,5 @@
 package pocketserver.packets;
 
-import pocketserver.PacketHandler;
 import java.net.DatagramPacket;
 import java.nio.ByteBuffer;
 import pocketserver.*;
@@ -22,6 +21,7 @@ public class Packet05ConnectionRequest1 extends Packet{
         mtuSize = (short)packet.getLength();
     }
 
+    @Override
     public DatagramPacket getPacket() {
         ByteBuffer rData = ByteBuffer.allocate(19);
         rData.put((byte)0x06);
@@ -30,6 +30,7 @@ public class Packet05ConnectionRequest1 extends Packet{
         return new DatagramPacket(rData.array(),19);
     }
 
+    @Override
     public void process(PacketHandler handler) {
         handler.process(getPacket());
     }

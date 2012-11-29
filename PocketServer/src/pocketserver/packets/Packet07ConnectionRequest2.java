@@ -1,9 +1,9 @@
 package pocketserver.packets;
 
-import pocketserver.PacketHandler;
 import java.net.DatagramPacket;
 import java.nio.ByteBuffer;
 import pocketserver.Hex;
+import pocketserver.PacketHandler;
 
 public class Packet07ConnectionRequest2 extends Packet {
     
@@ -25,6 +25,7 @@ public class Packet07ConnectionRequest2 extends Packet {
         clientID = bb.getLong();
     }
 
+    @Override
     public DatagramPacket getPacket() {
         ByteBuffer b = ByteBuffer.allocate(23);
         b.put((byte)0x08);
@@ -34,6 +35,7 @@ public class Packet07ConnectionRequest2 extends Packet {
         return new DatagramPacket(b.array(),23);
     }
 
+    @Override
     public void process(PacketHandler handler) {
         handler.process(getPacket());
     }
