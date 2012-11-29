@@ -16,13 +16,13 @@ public class Packet84FirstDataPacketResponse {
     }
 
     public DatagramPacket getPacket() {
-    ByteBuffer b = ByteBuffer.allocate(16);
+    ByteBuffer b = ByteBuffer.allocate(12);
         b.put((byte)0x00);
 	b.put((byte)0x00);
 	b.put((byte)0x48);	// data size / 8
 	b.put((byte)0x00);
 	b.putLong(unknown1);
-        return new DatagramPacket(b.array(),16);
+        return new DatagramPacket(b.array(),12);
     }
     
     byte[] response(PacketHandler handler) {

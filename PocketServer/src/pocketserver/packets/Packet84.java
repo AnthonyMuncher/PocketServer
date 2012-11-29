@@ -12,7 +12,7 @@ import pocketserver.PacketHandler;
 public class Packet84 extends Packet {
 
     private int packetType;
-    private int count;
+    private byte[] count = new byte[3];
     private byte[] buffer;
     private Queue customPackets = new LinkedList();
     private int packetLength;
@@ -24,7 +24,7 @@ public class Packet84 extends Packet {
 	if (packetType != 0x84) {
 	    return;
 	}
-	count = Hex.bytesToInt(Hex.getCountFromBuffer(b));
+	count = Hex.getCountFromBuffer(b);
 	len = packet.getLength()-4;
 	buffer = new byte[len];
 	b.get(buffer);
@@ -75,7 +75,7 @@ public class Packet84 extends Packet {
 	rData.put((byte)0xc0);
 	rData.putShort((short)1);
 	rData.put((byte)0x01);
-	rData.put(Hex.intToBytes(count, 3));
+	rData.put(count);
 //	rData.put((byte) 0xc0);
 //	rData.put((byte) 0x01);
 //	rData.put(Hex.intToBytes(count, 3));

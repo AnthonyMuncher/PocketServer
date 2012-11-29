@@ -50,17 +50,17 @@ class DataPacket {
 		Packet84LoginPacket lp = new Packet84LoginPacket(data);
 		b = lp.response(handler);
 	    } else {
-		System.out.println("Packet missing in DataPacket.java! " + Integer.toHexString(mcpeID));
+		System.out.println("1Packet missing in DataPacket.java! " + Integer.toHexString(mcpeID));
 	    }
 	} else if (encapsulationID == 0x60) {
 	    if (mcpeID == 0x00) {
 		Packet84FirstDataPacketResponse fdpr = new Packet84FirstDataPacketResponse(data);
 		b = fdpr.response(handler);
 	    } else {
-		System.out.println("Packet missing in DataPacket.java! " + Integer.toHexString(mcpeID));
+		System.out.println("2Packet missing in DataPacket.java! " + Integer.toHexString(mcpeID));
 	    }
 	} else {
-	    System.out.println("Packet missing in DataPacket.java! " + Integer.toHexString(encapsulationID));
+	    System.out.println("3Packet missing in DataPacket.java! " + Integer.toHexString(encapsulationID));
 	}
 	return b;
     }

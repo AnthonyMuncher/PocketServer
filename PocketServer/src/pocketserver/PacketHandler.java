@@ -67,9 +67,9 @@ public class PacketHandler implements Runnable {
             case 0x84:
 		response = new Packet84(p);
                 break;
-	    case 0xc0:
-		response = new Packetc0(p);
-		break;
+//	    case 0xc0:
+//		response = new Packetc0(p);
+//		break;
             default:
                 logger.warning((new StringBuilder()).append("Unknown packet: ").append(packetType).append(" From: ").append(player.getAddress()).append(" Port: ").append(packet.getPort()).append(" Size: ").append(packet.getLength()).toString());
                 break;

@@ -23,12 +23,13 @@ class Packet84UnknownPacket {
 	if (i == 0x03) { size += 8; }
 	ByteBuffer b = ByteBuffer.allocate(size);
         b.put((byte)0x00);
-	b.put((byte)0x00);
 	if (i == 0x00) {
+	    b.put((byte)0x01);
 	    b.put((byte)0x48);
 	    b.put((byte)0x00);
 	    b.putLong(unknown1);  
-	} else {
+	} else { 
+	    b.put((byte)0x00);
 	    b.put((byte)0x88);
 	    b.put((byte)0x00);
 	    b.putLong(unknown1);
