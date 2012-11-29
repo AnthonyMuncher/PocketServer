@@ -8,6 +8,8 @@ public class Player {
     private long lastRead;
     private int timeout;
     private String username;
+    private int clientCount;
+    private int serverCount;
 
     public Player(InetAddress address, int port) {
         this.address = address;
@@ -56,6 +58,11 @@ public class Player {
     
     public String getUsername() {
 	return this.username;
+    }
+    
+    public int getServerCount() {
+	this.serverCount++;
+	return this.serverCount;
     }
     
 }

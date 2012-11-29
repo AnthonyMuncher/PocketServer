@@ -30,7 +30,7 @@ class Packet84LoginPacket {
     
     byte[] response(PacketHandler handler) {
 	handler.player.setUsername(name);
-	return null;	// getPacket().getData();
+	return null; //getPacket().getData();
     }
     
 }

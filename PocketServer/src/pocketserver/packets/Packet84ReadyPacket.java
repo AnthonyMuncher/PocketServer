@@ -7,12 +7,13 @@ public class Packet84ReadyPacket {
     
     private byte unknown;
     
-     Packet84ReadyPacket(byte[] data) {
+    Packet84ReadyPacket(byte[] data) {
 	ByteBuffer bb = ByteBuffer.wrap(data);
 	unknown = bb.get();
     }
 
     public DatagramPacket getPacket() {
+	
 	return null;
     }
     

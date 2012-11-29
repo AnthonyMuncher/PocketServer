@@ -1,24 +1,18 @@
 package pocketserver.packets;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import pocketserver.Hex;
 import pocketserver.PacketHandler;
 
 public class Packet84 extends Packet {
 
     private int packetType;
-    private byte[] count = new byte[3];
+    private int count;
     private byte[] buffer;
     private Queue customPackets = new LinkedList();
     private int packetLength;
@@ -26,11 +20,11 @@ public class Packet84 extends Packet {
 
     public Packet84(DatagramPacket packet) {
 	ByteBuffer b = ByteBuffer.wrap(packet.getData());
-	packetType = Hex.byteToInt((int) b.get());
+	packetType = Hex.byteToInt((int)b.get());
 	if (packetType != 0x84) {
 	    return;
 	}
-	b.get(count);
+	count = Hex.bytesToInt(Hex.getCountFromBuffer(b));
 	len = packet.getLength()-4;
 	buffer = new byte[len];
 	b.get(buffer);
@@ -44,14 +38,20 @@ public class Packet84 extends Packet {
     
     @Override
     public void process(PacketHandler handler) {
+	
+	handler.process(getACK());
+	
 	splitPacket();
+	System.out.println("Packets todo: " + customPackets.size());
+	
 	Iterator it = customPackets.iterator();
 	
 	byte[] response = null;
-	System.out.println("Packets todo: " + customPackets.size());
+	
 	ByteArrayOutputStream f = new ByteArrayOutputStream(); 
 	f.write((byte)0x84);
-	f.write(Hex.intToBytes(0, 3),0,3);
+	f.write(Hex.intToBytes(handler.player.getServerCount(), 3),0,3); // TODO: Packet counter
+	
 	while (it.hasNext()) {
 	    DatagramPacket packet = (DatagramPacket)customPackets.poll();
 	    DataPacket dp = new DataPacket(packet);
@@ -67,14 +67,13 @@ public class Packet84 extends Packet {
 	    DatagramPacket p = new DatagramPacket(f.toByteArray(),f.size());
 	    handler.write(p);
 	}
-	handler.process(getACK());
     }
 
     public DatagramPacket getACK() {
 	ByteBuffer rData = ByteBuffer.allocate(5);
 	rData.put((byte) 0xc0);
 	rData.put((byte) 0x01);
-	rData.put(count);
+	rData.put(Hex.intToBytes(count, 3));
 	return new DatagramPacket(rData.array(), 5);
     }
 

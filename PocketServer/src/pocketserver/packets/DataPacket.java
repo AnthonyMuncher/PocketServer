@@ -38,7 +38,11 @@ class DataPacket {
 
     byte[] getResponse(PacketHandler handler) {
 	byte[] b = null;
-	if (encapsulationID == 0x40) {
+	if (encapsulationID == 0x00) {
+	    System.out.println("Unknownpacket");
+	    Packet84UnknownPacket up = new Packet84UnknownPacket(data);
+	    b = up.response();
+	} else if (encapsulationID == 0x40) {
 	    if (mcpeID == 0x09) {
 		System.out.println("FirstDataPacket");
 		Packet84FirstDataPacket fdp = new Packet84FirstDataPacket(data);

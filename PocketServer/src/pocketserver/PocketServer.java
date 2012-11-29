@@ -10,28 +10,29 @@ public class PocketServer implements Runnable {
     
     private PESocket peSocket = new PESocket(this);
     
-    private boolean startServer() {
+    private void startServer() {
         isRunning = true;
         ConsoleLogManager.init();
         
         peSocket.start();
-        
-        return true;
     }
         
     @Override
-    public void run() {
-        if(startServer()) {
-            logger.info("Starting PockerServer v0.0.1");
-            long ticks = 0;
-            while (isRunning) {
-                sleep(100);
-                ticks++;
-                if (ticks % 100 == 0) {
-                    Runtime.getRuntime().gc();
-                }
-            }
-        }
+    public void run() {	
+	try { 
+	    startServer();
+	}catch(Exception e) {
+	    isRunning = false;
+	}
+	logger.info("Starting PockerServer v0.0.1");
+	long ticks = 0;
+	while (isRunning) {
+	    sleep(100);
+	    ticks++;
+	    if (ticks % 100 == 0) {
+		Runtime.getRuntime().gc();
+	    }
+	}
     }
     
     public static void main(String[] args){
