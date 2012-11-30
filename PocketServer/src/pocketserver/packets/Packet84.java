@@ -49,7 +49,7 @@ public class Packet84 extends Packet {
 	
 	ByteArrayOutputStream f = new ByteArrayOutputStream(); 
 	f.write((byte)0x84);
-	f.write(Hex.intToBytes(handler.player.getServerCount(), 3),0,3); // TODO: Packet counter
+	f.write(Hex.intToBytes(handler.player.getServerCount(), 3),0,3);
 	
 	while (it.hasNext()) {
 	    DatagramPacket packet = (DatagramPacket)customPackets.poll();
@@ -60,8 +60,8 @@ public class Packet84 extends Packet {
 	    }
 	}
 	
-	if (f.size() > 4) {
-	    System.out.println("Response: " + Hex.getHexString(f.toByteArray(), true));
+	if (f.size() > 4) { // TODO: Make a counter for data packets
+	    //System.out.println("Response: " + Hex.getHexString(f.toByteArray(), true));
 	    DatagramPacket p = new DatagramPacket(f.toByteArray(),f.size());
 	    handler.write(p);
 	    handler.player.upServerCount();
@@ -97,7 +97,7 @@ public class Packet84 extends Packet {
 	    data.position(i);
 	    byte[] b = new byte[length];
 	    data.get(b);
-	    System.out.println("split: " + Hex.getHexString(b, true) + " Size: " + length);
+	    //System.out.println("split: " + Hex.getHexString(b, true) + " Size: " + length);
 	    DatagramPacket split = new DatagramPacket(b, b.length);
 	    customPackets.add(split);
 	    i += length;

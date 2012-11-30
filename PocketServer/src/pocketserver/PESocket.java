@@ -44,9 +44,9 @@ class PESocket implements Runnable {
                 Player iPlayer = it.next();
                 if (date.getTime() - iPlayer.getLastRead() > 15L) {
                     iPlayer.increaseTimeout();
-                    if (iPlayer.getTimeout() > 2) {
-                        logger.info((new StringBuilder()).append("Client timeout: ").append(iPlayer.getAddress()).toString());
-                        logger.info("Save user data!");
+                    if (iPlayer.getTimeout() > 20) {
+                        logger.info((new StringBuilder()).append("Client timeout: ").append(iPlayer.getAddress()).toString()); // TODO: Client timeout doesn't work
+                        logger.info("Save user data!"); // TODO: Saving user data
                         players.remove(iPlayer);
                         break;
                     }

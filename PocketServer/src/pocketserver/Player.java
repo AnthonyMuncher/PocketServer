@@ -11,6 +11,11 @@ public class Player {
     private int clientCount;
     private int serverCount;
     private long clientID;
+    private float x;
+    private float y;
+    private float z;
+    private float yaw;
+    private float pitch;
 
     public Player(InetAddress address, int port) {
         this.address = address;
@@ -72,5 +77,13 @@ public class Player {
 
     public void setClientID(long unknown1) {
 	this.clientID = unknown1;
+    }
+
+    public void setLocation(float x, float y, float z, float yaw, float pitch) {
+	this.x = x;
+	this.y = y;
+	this.z = z;
+	this.yaw = yaw;
+	this.pitch = pitch;
     }
 }

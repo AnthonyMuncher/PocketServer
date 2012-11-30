@@ -12,7 +12,7 @@ public class Packet1cPingConnections extends Packet {
     private long serverID = 1L;
     
     String identifier = "MCCPP;Demo;";
-    String serverName = "PocketServer";
+    String serverName = "PocketServer for Mac/PC";
 
     public Packet1cPingConnections(DatagramPacket p) {
         ByteBuffer bb = ByteBuffer.wrap(p.getData());

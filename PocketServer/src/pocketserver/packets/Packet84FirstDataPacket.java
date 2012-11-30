@@ -22,10 +22,10 @@ public class Packet84FirstDataPacket {
 	ByteBuffer b = ByteBuffer.allocate(106);
 	b.put((byte)0x60);  // Encapsulation ID
 	b.put((byte)0x03);b.put((byte)0x00); // size of packet
-	b.put(Hex.intToBytes(0, 3)); // count
+	b.put(Hex.intToBytes(0, 3)); // TODO: data packet count
 	b.put((byte)0x00); // MinecrafPE ID
 	b.putInt(16);
-	b.put((byte)0x04); b.put((byte)0x3f); b.put((byte)0x57); b.put((byte)0xfe); // Cookie needs to be saved in player class
+	b.put((byte)0x04); b.put((byte)0x3f); b.put((byte)0x57); b.put((byte)0xfe);
 	b.put((byte)0xcd);
 	b.putShort((short)port);
 	

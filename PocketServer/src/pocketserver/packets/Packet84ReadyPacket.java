@@ -18,6 +18,6 @@ public class Packet84ReadyPacket {
     }
     
     byte[] response() {
-	return null;	// getPacket().getData();
+	return null;//getPacket().getData();
     }  
 }

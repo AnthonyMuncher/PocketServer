@@ -18,8 +18,8 @@ class DataPacket {
 	encapsulationID = (b.get() & 0xFF);
 	if (encapsulationID == 0x00) {
 	    length = b.getShort();  
-	    data = new byte[length/8];
-	    b.get(data);
+	    mcpeID = (b.get()& 0xFF);
+	    data = new byte[(length/8)-1];
 	} else if (encapsulationID == 0x40) {
 	    length = b.getShort();  
 	    count = Hex.getCountFromBuffer(b);
@@ -39,28 +39,45 @@ class DataPacket {
     byte[] getResponse(PacketHandler handler) {
 	byte[] b = null;
 	if (encapsulationID == 0x00) {
-	    Packet84UnknownPacket up = new Packet84UnknownPacket(data);	// Something is wrong!
-	    b = up.response();
-	} else if (encapsulationID == 0x40) {
-	    if (mcpeID == 0x09) {
+	    if (mcpeID == 0x00) { 
+		Packet84UnknownPacket up = new Packet84UnknownPacket(data);	// FIXME: Something is wrong!
+		b = up.response();
+	    } else {
+		System.out.println("Encaps: " + Integer.toHexString(encapsulationID) + " mcpeID: " + Integer.toHexString(mcpeID) + "\nData: " + Hex.getHexString(data, true));
+	    }
+	} else if (encapsulationID == 0x40) {	
+	    if (mcpeID == 0x00) { 
+		Packet84UnknownPacket up = new Packet84UnknownPacket(data);
+		b = up.response();
+	    } else if (mcpeID == 0x09) {
 		Packet84FirstDataPacket fdp = new Packet84FirstDataPacket(data);
 		b = fdp.response(handler);
 	    } else if (mcpeID == 0x82) {
 		System.out.println("LoginPacket");
 		Packet84LoginPacket lp = new Packet84LoginPacket(data);
 		b = lp.response(handler);
-	    } else {
-		System.out.println("1Packet missing in DataPacket.java! " + Integer.toHexString(mcpeID));
+	    } else if (mcpeID == 0x94) {
+//		System.out.println("MovePlayerPacket");	    
+		Packet84MovePlayerPacket mpp = new Packet84MovePlayerPacket(data);
+		b = mpp.response(handler);
+	    } else if (mcpeID == 0x9d) {
+		System.out.println("ChunkRequestPacket");
+		Packet84ChunkRequestPacket rp = new Packet84ChunkRequestPacket(data);
+		b = rp.response();
+	    } else if (mcpeID == 0x9f) {
+//		System.out.println("PlayerEquipmentPacket");
+		Packet84PlayerEquipmentPacket pep = new Packet84PlayerEquipmentPacket(data);
+		b = pep.response(handler);
+	    }else {
+		System.out.println("Encaps: " + Integer.toHexString(encapsulationID) + " mcpeID: " + Integer.toHexString(mcpeID) + "\nData: " + Hex.getHexString(data, true));
 	    }
 	} else if (encapsulationID == 0x60) {
 	    if (mcpeID == 0x00) {
 		Packet84FirstDataPacketResponse fdpr = new Packet84FirstDataPacketResponse(data);
 		b = fdpr.response(handler);
-	    } else {
-		System.out.println("2Packet missing in DataPacket.java! " + Integer.toHexString(mcpeID));
 	    }
 	} else {
-	    System.out.println("3Packet missing in DataPacket.java! " + Integer.toHexString(encapsulationID));
+	    System.out.println(Integer.toHexString(encapsulationID) + " " + Integer.toHexString(mcpeID) + " " + Hex.getHexString(data, true));
 	}
 	return b;
     }
