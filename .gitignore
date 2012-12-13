@@ -1,0 +1,11 @@
+.DS_Store
+PocketServer/build/
+PocketServer/nbproject/private/
+PocketServer/dist/
+PocketServer/nbdist/
+PocketServer/nbactions.xml
+PocketServer/nb-configuration.xml
+PocketServer/server.log
+/PEServer/nbproject/private/
+/PEServer/build/
+/Minecraft/nbproject/private/
