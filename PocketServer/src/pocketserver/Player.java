@@ -1,89 +1,72 @@
 package pocketserver;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
 
+/**
+ *
+ * @author Intyre
+ */
 public class Player {
-    private InetAddress address;
-    private int port;
-    private long lastRead;
-    private int timeout;
-    private String username;
-    private int clientCount;
-    private int serverCount;
+
+    private InetAddress clientAddress;
+    private int clientPort;
+    private String clientName;
     private long clientID;
-    private float x;
-    private float y;
-    private float z;
-    private float yaw;
-    private float pitch;
-
-    public Player(InetAddress address, int port) {
-        this.address = address;
-        this.port = port;
-	this.serverCount = 0;
+    private int packetCount;
+    private int dataCount;
+    private ArrayList<Float> position;
+    
+    public Player(InetAddress address, int port,long cid) {
+	clientAddress = address;
+	clientPort = port;
+	clientID = cid;
+	clientName = "";
+	packetCount = 0;
+	dataCount = 0;
+	position = new ArrayList<Float>();
+	position.add(128.0f);
+	position.add(65.0f);
+	position.add(128.0f);
     }
-
-    public long getLastRead() {
-        return this.lastRead;
+    
+    public void setName(String s) {
+	clientName = s;
     }
-
-    public void increaseTimeout() {
-        this.timeout++;
-    }
-
-    public int getTimeout() {
-        return this.timeout;
+    
+    public String getName() {
+	return clientName;
     }
 
     public InetAddress getAddress() {
-        return this.address;
-    }
-
-    public void setLastRead(long time) {
-        this.lastRead = time;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
+	return clientAddress;
     }
 
     public int getPort() {
-        return this.port;
+	return clientPort;
     }
 
-    void resetTimeout(int i) {
-        this.timeout = i;
-    }
-
-    void setAddress(InetAddress address) {
-        this.address = address;
-    }
-
-    public void setUsername(String name) {
-	this.username = name;
+    public int getPacketCount() {
+	return packetCount++;
     }
     
-    public String getUsername() {
-	return this.username;
+    public int getDataCount() {
+	return packetCount++;
     }
     
-    public int getServerCount() {
-	return this.serverCount;
+    public long getClientID() {
+	return clientID;
     }
     
-    public void upServerCount() {
-	this.serverCount++;
+    public void setPosition(float x, float y, float z) {
+	position.set(0,x);
+	position.set(1,y);
+	position.set(2,z);
     }
-
-    public void setClientID(long unknown1) {
-	this.clientID = unknown1;
+    
+    public ArrayList getPosition() {
+	return position;
     }
-
-    public void setLocation(float x, float y, float z, float yaw, float pitch) {
-	this.x = x;
-	this.y = y;
-	this.z = z;
-	this.yaw = yaw;
-	this.pitch = pitch;
-    }
+    
+    
 }

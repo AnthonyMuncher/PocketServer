@@ -2,32 +2,11 @@ package pocketserver;
 
 import java.nio.ByteBuffer;
 
+/**
+ *
+ * @author Intyre
+ */
 public class Hex {
-
-    public static byte[] getMagicFromBuffer(ByteBuffer bb) {
-        byte[] data = new byte[16];
-        bb.get(data);
-        return data;
-    }
-    
-    public static byte[] getCookieFromBuffer(ByteBuffer bb) {
-        byte[] data = new byte[4];
-        bb.get(data);
-        return data;
-    }
-    
-    public static byte[] getCountFromBuffer(ByteBuffer bb) {
-        byte[] data = new byte[3];
-        bb.get(data);
-        return data;
-    }
-    
-    public static byte[] getBytesFromBuffer(ByteBuffer bb,int i) {
-        byte[] data = new byte[i];
-        bb.get(data);
-        return data;
-    }
-    
     public static String getHexString(byte b) {
         String hex = Integer.toHexString(0xFF & b);
         String hexString = "";
@@ -37,7 +16,7 @@ public class Hex {
         hexString += hex;
         return hexString;
     }
-	
+    
     public static String getHexString(byte[] b, boolean w) {
         String str = "";
         for (int i=0; i<b.length; i++) {
@@ -54,32 +33,26 @@ public class Hex {
         }    
         return bytes;
     }
-
-    public static int bytesToInt(byte[] data) {
-        data = new byte[3];
-        int value = 0;
-        for (int i = 0; i < data.length; i++) {
-            value += ((long) data[i] & 0xffL) << (8 * i);
-        }
-        return value;
-    }
     
-    public static int byteToInt(int lb) {
-        byte hb = 0;
-        int e = ((int)hb<<8)|(lb&0xFF);
-        return e;
-    }
-    
-    public static byte[] concatByteArray(byte[] a, byte[] b) {
-	byte[] result = new byte[a.length + b.length];
-	System.arraycopy(a, 0, result, 0, a.length);
-	System.arraycopy(b, 0, result, a.length, b.length);
-	return result;
-    }
-
     public static String bytesToString(ByteBuffer bb, short nameLength) {
 	byte[] b = new byte[nameLength];
 	bb.get(b);
 	return new String(b);
+    }
+    
+    public static byte[] shortToByte(short s) {
+	byte[] r = new byte[2];
+	r[0] = (byte)((s&0xFF00)>>8);
+	r[1] = (byte)((s&0x00FF));
+	return r;
+    }
+    
+    public static byte[] intToBytesB(int i) {
+	byte[] r = new byte[4];
+	r[0] = (byte)((i&0xFF000000)>>24);
+	r[1] = (byte)((i&0x00FF0000)>>16);
+	r[2] = (byte)((i&0x0000FF00)>>8);
+	r[3] = (byte)(i&0x000000FF);
+	return r;
     }
 }

@@ -1,33 +1,59 @@
 package pocketserver;
 
+import java.net.SocketException;
+import java.util.Random;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PocketServer implements Runnable {
 
     public static final Logger logger = Logger.getLogger("PocketServer");
+
+    private boolean serverRunning;
+    public boolean serverStopped;
+    public NetworkManager networkManager;
+    private String motd;
+    private Long serverID;
+    private Random rnd = new Random();
     
-    private boolean isRunning;
-    
-    private PESocket peSocket = new PESocket(this);
+    private PocketServer() {
+	serverRunning = true;
+	serverStopped = false;
+    }
     
     private void startServer() {
-        isRunning = true;
-        ConsoleLogManager.init();
-        
-        peSocket.start();
+	motd = "MCCPP;Demo;Pocket";
+	serverID = rnd.nextLong();
+	
+	ServerCommands serverCommands = new ServerCommands(this);
+	serverCommands.setDaemon(true);
+	serverCommands.start();
+	
+	ConsoleLogManager.init();
+	
+	logger.info("Starting PockerServer v0.0.1");
+	try {
+	    networkManager = new NetworkManager(this,19132);
+	    networkManager.run();
+	} catch (SocketException i) {
+	    i.printStackTrace();
+	}
     }
-        
-    @Override
-    public void run() {	
+	
+    public void run() {
 	try { 
 	    startServer();
 	}catch(Exception e) {
-	    isRunning = false;
+	    serverRunning = false;
 	}
-	logger.info("Starting PockerServer v0.0.1");
+	
 	long ticks = 0;
-	while (isRunning) {
-	    sleep(100);
+	while (serverRunning) {
+	    try {
+		Thread.sleep(100);
+	    } catch (InterruptedException ex) {
+		logger.log(Level.SEVERE, null, ex);
+	    }
 	    ticks++;
 	    if (ticks % 100 == 0) {
 		Runtime.getRuntime().gc();
@@ -35,20 +61,31 @@ public class PocketServer implements Runnable {
 	}
     }
     
-    public static void main(String[] args){
-        try {
+    public static void main(String[] args) {
+	try {
             PocketServer server = new PocketServer();
             server.run();
         } catch (Exception e) {
             logger.info("Failed to start PocketServer");
         }
-    }   
+    }
 
-    public static void sleep(int i) {
-        try { Thread.sleep(i); } catch (InterruptedException e) { }
+    String getMotd() {
+	return motd;
+    }
+    
+    Long getServerID() {
+	return serverID;
     }
     
     static boolean isServerRunning(PocketServer server) {
-        return server.isRunning;
+	return server.serverRunning;
+    }
+    
+    public void getConnectedList() {
+	logger.info("Connected clients:");
+	for (Player player : networkManager.players) {
+	    logger.info((new StringBuilder()).append(player.getName().length() != 0 ? player.getName() : "Unknown").append("\t").append(player.getAddress()).append(":").append(player.getPort()).toString());
+	}
     }
 }
