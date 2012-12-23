@@ -35,8 +35,8 @@ public class PacketHandler implements Runnable {
     private InetAddress clientAddress;
     private int clientPort;
     private Queue<DatagramPacket> splitPackets = new LinkedList();
-    private Queue<ByteBuffer> queuePackets = new LinkedList<>();
-    private Queue<ByteBuffer> queuePacketsToAll = new LinkedList<>();
+    private Queue<ByteBuffer> queuePackets = new LinkedList<ByteBuffer>();
+    private Queue<ByteBuffer> queuePacketsToAll = new LinkedList<ByteBuffer>();
     private int queueDataSize;
     private int queueDataSizeToAll;
 
