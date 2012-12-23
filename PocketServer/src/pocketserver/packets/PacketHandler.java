@@ -151,6 +151,9 @@ public class PacketHandler implements Runnable {
 			}
 		    }
 		    break;
+                case 0x85:
+                    new MessagePacket(p).processAll(this);
+                    break;
 		case 0x94:
 		    pkt = new MovePlayerPacket(p, player);
 		    break;
@@ -310,5 +313,9 @@ public class PacketHandler implements Runnable {
     public void addToQueueForAll(ByteBuffer b) {
 	queuePacketsToAll.add(b);
 	queueDataSizeToAll += b.capacity();
+    }
+
+    private void ChatHandle() {
+        new MessagePacket(packet).processAll(this);
     }
 }

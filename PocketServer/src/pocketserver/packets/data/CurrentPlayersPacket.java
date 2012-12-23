@@ -36,7 +36,6 @@ public class CurrentPlayersPacket extends Packet {
 	response.put((byte) 0x00);
 	response.putShort((short) current.blockID);
 	response.put((byte) 0x7f);
-	System.out.println("Response: " + Hex.getHexString(response.array(), true));
 	return response;
     }
 
@@ -45,7 +44,6 @@ public class CurrentPlayersPacket extends Packet {
 	for (Player p : players) {
 	    if (!p.clientAddress.equals(player.clientAddress) && p.clientPort != player.clientPort && p.isConnected) {
 		h.addToQueue(getPacket((Player) p));
-		System.out.println(p.name);
 	    }
 	}
 	h.addToQueueForAll(getPacket(player));

@@ -6,10 +6,12 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.util.Random;
+import java.util.logging.Logger;
 import pocketserver.packets.PacketHandler;
 
 public class NetworkManager extends Thread {
 
+    private static final Logger logger = Logger.getLogger("PocketServer");
     private boolean isListening;
     private PocketServer pocket;
     public DatagramSocket socket;
@@ -39,7 +41,7 @@ public class NetworkManager extends Thread {
 		socket.setSoTimeout(0);
 		packetSize = packet.getLength();
 	    } catch (Exception e) {
-		System.out.println("Nobody wants to play? :(");
+		logger.finer("No packets received for 5 seconds :(");
 	    }
 
 

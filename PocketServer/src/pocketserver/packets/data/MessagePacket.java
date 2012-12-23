@@ -1,5 +1,6 @@
 package pocketserver.packets.data;
 
+import java.net.DatagramPacket;
 import java.nio.ByteBuffer;
 import pocketserver.Hex;
 import pocketserver.Player;
@@ -12,6 +13,14 @@ public class MessagePacket extends Packet {
 
     public MessagePacket(String s) {
 	message = s;
+    }
+
+    public MessagePacket(DatagramPacket packet) {
+        ByteBuffer b = ByteBuffer.wrap(packet.getData());
+        System.out.println(Hex.getHexString(b.array(), true));
+        b.get();
+        short messageLength = b.getShort();
+        message = Hex.bytesToString(b, messageLength);
     }
 
     @Override
@@ -46,5 +55,9 @@ public class MessagePacket extends Packet {
     @Override
     public void process(PacketHandler h) {
 	h.addToQueue(getPacket());
+    }
+
+    public void processAll(PacketHandler h) {
+        h.addToQueueForAll(getPacket());
     }
 }

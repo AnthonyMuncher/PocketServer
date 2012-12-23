@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.logging.Logger;
 import pocketserver.packets.data.DisconnectPacket;
 import pocketserver.packets.data.MessagePacket;
+import pocketserver.packets.data.SetHealthPacket;
 
 public class ServerCommands extends Thread {
 
@@ -40,6 +41,9 @@ public class ServerCommands extends Thread {
 	} else if (s.toLowerCase().startsWith("say ")) {
 	    String say = s.substring(s.indexOf(" ")).trim();
 	    sendMessagePacket(say);
+	} else if (s.toLowerCase().startsWith("suicide ")) {
+	    String name = s.substring(s.indexOf(" ")).trim();
+	    sendSuicidePacket(name);
 	} else {
 	    logger.info("Unknown command!");
 	}
@@ -77,5 +81,14 @@ public class ServerCommands extends Thread {
 	    server.networkManager.sendPacket(new DisconnectPacket().sendPacket(player), player);
 	}
 	server.initiateShutdown();
+    }
+
+    private void sendSuicidePacket(String name) {
+        for (Player p : server.players) {
+            if (p.name.equals(name)) {
+                server.networkManager.sendPacket(new MessagePacket("Silence! I Kill You!").sendPacket(p), p);
+                server.networkManager.sendPacket(new SetHealthPacket((byte)0).sendPacket(p), p);
+            }
+        }
     }
 }

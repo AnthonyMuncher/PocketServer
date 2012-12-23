@@ -57,7 +57,7 @@ public class PocketServer implements Runnable {
 		ticks++;
 		if (ticks % 100 == 0) {
 		    Runtime.getRuntime().gc();
-		    System.out.println("Connected players: " + players.size());
+		    logger.info("Connected players: " + players.size());
 		}
 	    }
 	}
@@ -85,7 +85,7 @@ public class PocketServer implements Runnable {
 	    }
 	    players.add(new Player(i, p, entityID, cid));
 	    connectedPlayers++;
-	    System.out.println("Connected players: " + players.size());
+	    logger.info("Connected players: " + players.size());
 	}
     }
 
