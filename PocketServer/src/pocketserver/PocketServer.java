@@ -21,7 +21,7 @@ public class PocketServer implements Runnable {
 	serverRunning = true;
 	serverStopped = false;
 	connectedPlayers = 0;
-	players = new ArrayList<>();
+	players = new ArrayList<Player>();
     }
 
     private boolean startServer() {
