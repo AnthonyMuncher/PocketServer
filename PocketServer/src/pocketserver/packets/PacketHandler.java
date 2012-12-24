@@ -170,7 +170,7 @@ public class PacketHandler implements Runnable {
 		    pkt = new MessagePacket("Die DIe DIE!!!!");
 		    break;
 		case 0xa1:
-		    System.out.println((new StringBuilder()).append("UseItemPacket: ").append(Integer.toHexString(mcpeID)).append(" -> ").append(Hex.getHexString(p.getData(), true)).append(" Size: ").append(p.getLength()).toString());
+//		    System.out.println((new StringBuilder()).append("UseItemPacket: ").append(Integer.toHexString(mcpeID)).append(" -> ").append(Hex.getHexString(p.getData(), true)).append(" Size: ").append(p.getLength()).toString());
 		    pkt = new UseItemPacket(p, player);
 		    break;
 		case 0xa7:

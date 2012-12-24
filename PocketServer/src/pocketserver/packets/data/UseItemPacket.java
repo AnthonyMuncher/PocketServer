@@ -79,8 +79,58 @@ public class UseItemPacket extends Packet {
 
     @Override
     public void process(PacketHandler h) {
-//		if(player.x != getX() && player.y != getY() && player.z != getZ()) {
-	h.addToQueueForAll(getPacket());
-//		}
+        if (!currentPos()) {
+            getBlockData();
+            h.addToQueueForAll(getPacket());
+        }
+    }
+
+    private boolean currentPos() {
+        if((int)player.x == getX() && (int)player.y == getY() && (int)player.z == getZ()) {
+           return true;
+	}
+        return false;
+    }
+
+    private void getBlockData() {
+        System.out.println("ID: " + blockID + " X: " + fx + " Y: " + fy + " Z: " + fz);
+        if (blockID == 50) {
+            if (fx == 0.0f) {
+                blockData = 2;
+            } else if (fx == 1.0f) {
+                blockData = 1;
+            }
+            
+            if (fy == 0.0f || fy == 1.0f) {
+                blockData = 0;
+            }
+            
+            if (fz == 0.0f) {
+                blockData = 4;
+            } else if (fz == 1.0f) {
+                blockData = 3;
+            }
+        } else if (blockID == 53 || blockID == 67 || blockID == 108) {
+            int a = floor_double((double)((player.yaw * 4f) /360f) +0.5D) & 3;
+            
+            if(a == 0) {
+                blockData= 2;
+            } 
+            if(a == 1) {
+                blockData= 1;
+            } 
+            if(a == 2) {
+                blockData= 3;
+            }
+            if(a == 3) {
+                blockData = 0;
+            }
+        }
+    }
+    
+    public static int floor_double(double d)
+    {
+        int i = (int)d;
+        return d >= (double)i ? i : i - 1;
     }
 }
